@@ -5,7 +5,7 @@ require 'report_builder'
 require 'parallel_tests'
 require 'byebug'
 
-namespace :klikpajak do
+namespace :flip do
   @status = true
   @max_parallel = ENV['MAX_PARALLEL'].to_i
 
@@ -13,8 +13,8 @@ namespace :klikpajak do
     t.cucumber_opts = %w[--format progress]
   end
 
-  Cucumber::Rake::Task.new(:test, 'Run Klikpajak Automation Test') do |t|
-    # sample use: rake klikpajak:test t=@login REPORT_NAME=2
+  Cucumber::Rake::Task.new(:test, 'Run Flip Automation Test') do |t|
+    # sample use: rake flip:test t=@login REPORT_NAME=2
     t.cucumber_opts = ["-t #{ENV['t']}"] unless ENV['t'].nil?
     t.cucumber_opts = ["features/#{ENV['f']}"] unless ENV['f'].nil?
     t.profile = 'rake_run'
@@ -24,9 +24,7 @@ namespace :klikpajak do
   task :parallel do
     abort '=====:: Failed to proceed, tags needed for parallel (t=@sometag)' if ENV['t'].nil?
     puts "=====:: Parallel execution tag: #{ENV['t']} about to start "
-    # these exec no needed, already covered in "klikpajak:parallel"
-    # Rake::Task['klikpajak:clear_report'].execute
-    # Rake::Task['klikpajak:init_report'].execute
+    
 
     begin
       @status = system "bundle exec parallel_cucumber features/ -n #{@max_parallel} -o '-t #{ENV['t']}'"
@@ -36,8 +34,6 @@ namespace :klikpajak do
       pp exception
     ensure
       puts '=====::  ::====='
-      # p "merging report:"
-      # Rake::Task["klikpajak:merge_report"].execute
     end
   end
 
@@ -46,9 +42,6 @@ namespace :klikpajak do
     abort '=====:: Failed to proceed, run id needed for parallel (RUN_ID=12345)' if ENV['RUN_ID'].nil?
     puts "=====:: Parallel execution run id: #{ENV['RUN_ID']} about to start "
     puts "=====:: #{@max_parallel} processes"
-    # these exec no needed, already covered in "klikpajak:parallel"
-    # Rake::Task['icebox:clear_report'].execute
-    # Rake::Task['icebox:init_report'].execute
 
     begin
       running_file = []
@@ -85,8 +78,6 @@ namespace :klikpajak do
       pp exception
     ensure
       puts '=====::  ::====='
-      # p "merging report:"
-      # Rake::Task["icebox:merge_report"].execute
     end
   end
 
@@ -105,7 +96,7 @@ namespace :klikpajak do
   end
 
   task :init_report do
-    puts '=====:: Preparing KlikPajak ::====='
+    puts '=====:: Preparing Flip ::====='
     report_root = File.absolute_path('./report')
     ENV['REPORT_PATH'] = Time.now.strftime('%F_%H-%M-%S.%N')
     puts "=====:: about to create report #{ENV['REPORT_PATH']} "
@@ -137,18 +128,11 @@ namespace :klikpajak do
 
   task :run do
     # Before all
-    Rake::Task['klikpajak:clear_report'].execute
+    Rake::Task['flip:clear_report'].execute
 
     # Test 1
-    Rake::Task['klikpajak:init_report'].execute
-    system 'rake klikpajak:test t=@login'
-
-    # Test 2
-    # Rake::Task['icebox:init_report'].execute
-    # system 'rake icebox:test t=@signup'
-
-    # # After all
-    # Rake::Task['icebox:merge_report'].execute
+    Rake::Task['flip:init_report'].execute
+    system 'rake flip:test t=@login'
   end
 
   task :rerun do

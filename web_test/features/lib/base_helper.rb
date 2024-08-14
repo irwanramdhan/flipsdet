@@ -198,20 +198,6 @@ module BaseHelper
       end
     end
   
-    def wait_for_page_done
-      retries ||= 0
-      begin
-        return short_wait.until { (element_displayed? 'css:.pace-done,#__pixel-app+section', 5).eql? true } unless (current_url.include? 'account.mekari') || (current_url.include? 'sso.mekari') # KP page or Create company page # KP page or Create company page
-        return short_wait.until { (element_displayed? 'css:div#container,#app', 5).eql? true } if ((current_url.include? 'account.mekari') || (current_url.include? 'sso.mekari')) && (!current_url.include? 'sign_in') && (!current_url.include? '/auth') # Launch page
-        return short_wait.until { (element_displayed? 'css:div.container', 5).eql? true } if (current_url.include? 'account.mekari.io/auth') && (!current_url.include? 'sign_in') # confirmation page
-        return short_wait.until { (element_displayed? 'css:#new_user', 5).eql? true } if current_url.include? 'sign_in' # Login page
-      rescue Exception => e
-        p e.message
-        retry if (retries += 1) < 3
-        raise "wait_for_page_done timeout #{retries} times" if retries == 3
-      end
-    end
-  
     def page_revamp
       current_url.include? '/v'
     end

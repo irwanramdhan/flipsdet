@@ -24,8 +24,6 @@ require_relative '../lib/base_helper'
 require 'byebug'
 # require 'pdf-reader'
 # require_relative '../lib/converter_csv_to_excel'
-require 'mekari_analytic'
-require 'mekari_qa_notification/post_automation_report'
 
 include RSpec::Matchers
 include BaseHelper
@@ -34,7 +32,7 @@ include DataMagic
 
 Dotenv.load
 browser = 'chrome'.to_sym
-base_url = ENV['BASE_URL'] || 'http://klikpajak-staging.cd.jurnal.id'
+base_url = ENV['BASE_URL'] || 'https://flip-sample-form.onrender.com/'
 ENV['BASE_URL_API'] = ENV['BASE_URL'] + '/main/api/'
 wait_time = 120
 SHORT_TIMEOUT = 30
