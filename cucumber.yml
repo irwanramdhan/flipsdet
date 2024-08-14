@@ -1,0 +1,8 @@
+default: --format pretty --format html --out=report/<%= ENV['REPORT_PATH']%>/features_reports.html -f rerun  -o report/<%= ENV['REPORT_PATH']%>/rerun.txt
+# parallel: --format pretty --format html --out report/<%= ENV['REPORT_PATH']%>/features_report_<%= ENV['TEST_ENV_NUMBER']%>.html
+parallel: -p rake_run
+rake_run: --format progress --format html --out report/<%= ENV['REPORT_PATH']%>/features_report<%= ENV['TEST_ENV_NUMBER']%>.html --format json --out=report/<%= ENV['REPORT_PATH']%>/cucumber<%= ENV['TEST_ENV_NUMBER']%>.json -f rerun  -o report/<%= ENV['REPORT_PATH']%>/rerun.txt
+parallel_ci: --format pretty --format json --out=report/<%= ENV['REPORT_PATH']%>/cucumber_<%= ENV['TEST_ENV_NUMBER']%>.json CI=true
+html_report: --format pretty --format html --out=report/<%= ENV['REPORT_PATH']%>/features_reports.html
+jenkins: -f pretty -f json --out=report/<%= ENV['REPORT_PATH']%>/cucumber.json CI=true
+rerun: --format pretty --format html --out report/<%= ENV['REPORT_PATH']%>/features_report_<%= ENV['RERUN_FILE']%>_<%= ENV['TEST_ENV_NUMBER']%>.html --format json --out=report/<%= ENV['REPORT_PATH']%>/cucumber_<%= ENV['RERUN_FILE']%>_<%= ENV['TEST_ENV_NUMBER']%>.html --format json --out=report/<%= ENV['REPORT_PATH']%>/cucumber_<%= ENV['RERUN_FILE']%>_<%= ENV['TEST_ENV_NUMBER']%>.json

@@ -1,0 +1,11 @@
+invalid_data:
+  first_name: 123
+  middle_name: 123
+  last_name: 123
+  email: 'irwan.com'
+  phone_no: 12345
+
+valid_data:
+  dob: 12122012
+  email: 'irwanflip@mail.com'
+  phone_no: 12345678901
